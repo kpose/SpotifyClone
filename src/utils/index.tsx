@@ -1,3 +1,4 @@
 import * as color from './colors';
+import {ThemeProvider} from './ThemeProvider';
 
-export {color};
+export {color, ThemeProvider};

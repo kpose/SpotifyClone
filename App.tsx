@@ -1,4 +1,3 @@
-import 'react-native-gesture-handler';
 import React from 'react';
 import {
   SafeAreaView,
@@ -9,17 +8,28 @@ import {
   StatusBar,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
+import {AppearanceProvider} from 'react-native-appearance';
+import {ThemeProvider} from './src/utils';
+import {useTheme} from './src/utils/ThemeProvider';
 import BottomTab from './src/navigation/BottomTab';
 
 const App = () => {
+  const {colors, isDark} = useTheme();
   return (
     <>
-      <NavigationContainer>
-        <StatusBar barStyle="dark-content" />
-        <View style={styles.container}>
-          <BottomTab />
-        </View>
-      </NavigationContainer>
+      <AppearanceProvider>
+        <ThemeProvider>
+          <NavigationContainer>
+            <StatusBar
+              animated
+              barStyle={isDark ? 'light-content' : 'dark-content'}
+            />
+            <View style={styles.container}>
+              <BottomTab />
+            </View>
+          </NavigationContainer>
+        </ThemeProvider>
+      </AppearanceProvider>
     </>
   );
 };
@@ -27,7 +37,6 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //justifyContent: 'center',
   },
 });
 
