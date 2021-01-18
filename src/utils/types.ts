@@ -2,6 +2,10 @@ export type AlbumTypes = {
     id: string;
     imageUri: string;
     artistsHeadline: string;
+    name: string;
+    by: string;
+    numberOfLikes: number
+
 }
 
 export type Song = {

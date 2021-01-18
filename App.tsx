@@ -12,6 +12,7 @@ import {AppearanceProvider} from 'react-native-appearance';
 import {ThemeProvider} from './src/utils';
 import {useTheme} from './src/utils/ThemeProvider';
 import BottomTab from './src/navigation/BottomTab';
+import {PlayerWidget} from './src/components';
 
 const App = () => {
   const {colors, isDark} = useTheme();
@@ -26,6 +27,7 @@ const App = () => {
             />
             <View style={styles.container}>
               <BottomTab />
+              <PlayerWidget />
             </View>
           </NavigationContainer>
         </ThemeProvider>
