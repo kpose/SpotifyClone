@@ -9,5 +9,11 @@ export const Switch: React.FC<{}> = () => {
     isDark ? setScheme('light') : setScheme('dark');
   };
 
-  return <RNSwitch value={isDark} onValueChange={toggleScheme} />;
+  return (
+    <RNSwitch
+      value={isDark}
+      onValueChange={toggleScheme}
+      style={{marginRight: 10, transform: [{scaleX: 0.8}, {scaleY: 0.8}]}}
+    />
+  );
 };
