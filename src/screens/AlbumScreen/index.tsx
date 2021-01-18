@@ -4,7 +4,7 @@ import styles from './styles';
 import {useRoute} from '@react-navigation/native';
 import {useTheme} from '../../utils/ThemeProvider';
 import AlbumDetails from '../../data/AlbumDetails';
-import {SongListItem} from '../../components';
+import {SongListItem, AlbumHeader} from '../../components';
 
 const AlbumScreen = () => {
   const {colors, isDark} = useTheme();
@@ -31,6 +31,8 @@ const AlbumScreen = () => {
         data={AlbumDetails.songs}
         renderItem={({item}) => <SongListItem song={item} />}
         keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={() => <AlbumHeader album={AlbumDetails} />}
       />
     </View>
   );

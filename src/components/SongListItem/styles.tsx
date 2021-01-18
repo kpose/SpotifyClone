@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
   },
 });
 
