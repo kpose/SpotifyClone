@@ -1,6 +1,8 @@
 import React from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {Home, Library, Premium, Search} from '../screens';
+import HomeStack from './HomeStack';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {useTheme} from '../utils/ThemeProvider';
@@ -11,12 +13,12 @@ function BottomTab() {
   const {colors, isDark} = useTheme();
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeStack"
       activeColor={colors.text}
       style={{backgroundColor: colors.background}}>
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="HomeStack"
+        component={HomeStack}
         options={{
           tabBarLabel: 'Home',
           tabBarColor: colors.background,

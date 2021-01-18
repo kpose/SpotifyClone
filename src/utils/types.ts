@@ -3,3 +3,10 @@ export type AlbumTypes = {
     imageUri: string;
     artistsHeadline: string;
 }
+
+export type Song = {
+    id: any;
+    imageUri: string;
+    title: string;
+    artist: string;
+}
