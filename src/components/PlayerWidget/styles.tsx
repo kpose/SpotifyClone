@@ -4,14 +4,21 @@ import {color} from '../../utils/';
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    flexDirection: 'row',
     //margin: 10,
     bottom: 79,
     width: '100%',
-    alignItems: 'center',
+    //alignItems: 'center',
     borderWidth: 1,
     borderColor: color.BLACK,
     backgroundColor: '#262525', //tentative #262525
+  },
+  progressBar: {
+    height: 3,
+    backgroundColor: color.WARNING,
+  },
+
+  row: {
+    flexDirection: 'row',
   },
   rightContainer: {
     flex: 1,

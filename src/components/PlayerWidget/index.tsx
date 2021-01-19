@@ -28,9 +28,13 @@ const song = {
 const PlayerWidget = () => {
   const [sound, setSound] = useState<Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [duration, setDuration] = useState<number | null>(null);
+  const [position, setPosition] = useState<number | null>(null);
 
   const onPlaybackStatusUpdate = (status: any) => {
     setIsPlaying(status.isPlaying);
+    setDuration(status.durationMillis);
+    setPosition(status.positionMillis);
   };
 
   const playCurrentSong = async () => {
@@ -38,7 +42,8 @@ const PlayerWidget = () => {
       await sound.unloadAsync();
     }
     const {sound: newSound} = await Sound.createAsync(
-      {uri: song.uri},
+      //{uri: song.uri},
+      require('../../data/Dea.mp3'),
       {shouldPlay: isPlaying},
       onPlaybackStatusUpdate,
     );
@@ -60,6 +65,14 @@ const PlayerWidget = () => {
     }
   };
 
+  const getProgress = () => {
+    if (sound === null || duration === null || position === null) {
+      return 0;
+    }
+
+    return (position / duration) * 100;
+  };
+
   const {colors, isDark} = useTheme();
 
   const containerStyle = {
@@ -76,23 +89,27 @@ const PlayerWidget = () => {
 
   return (
     <View style={[containerStyle, styles.container]}>
-      <Image source={{uri: song.imageUri}} style={styles.image} />
+      <View style={[styles.progressBar, {width: `${getProgress()}%`}]} />
 
-      <View style={styles.rightContainer}>
-        <View style={styles.nameContainer}>
-          <Text style={[styles.title, textStyle]}>{song.title}</Text>
-          <Text style={[styles.artist]}>{song.artist}</Text>
-        </View>
-        <View style={styles.iconsContainer}>
-          <Icon name="heart-o" color={color.WHITE} size={25} />
+      <View style={styles.row}>
+        <Image source={{uri: song.imageUri}} style={styles.image} />
 
-          <TouchableOpacity onPress={onPlayPausePress}>
-            <Icon
-              name={isPlaying ? 'pause' : 'play'}
-              color={color.WHITE}
-              size={25}
-            />
-          </TouchableOpacity>
+        <View style={styles.rightContainer}>
+          <View style={styles.nameContainer}>
+            <Text style={[styles.title, textStyle]}>{song.title}</Text>
+            <Text style={[styles.artist]}>{song.artist}</Text>
+          </View>
+          <View style={styles.iconsContainer}>
+            <Icon name="heart-o" color={color.WHITE} size={25} />
+
+            <TouchableOpacity onPress={onPlayPausePress}>
+              <Icon
+                name={isPlaying ? 'pause' : 'play'}
+                color={color.WHITE}
+                size={25}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
