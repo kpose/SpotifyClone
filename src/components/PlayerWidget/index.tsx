@@ -1,13 +1,24 @@
-import React from 'react';
-import {View, Text, Image, TextStyle, ViewStyle} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TextStyle,
+  ViewStyle,
+  TouchableOpacity,
+} from 'react-native';
 import {Song} from '../../utils/types';
 import styles from './styles';
 import {useTheme} from '../../utils/ThemeProvider';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {color} from '../../utils/';
+import {Audio} from 'expo-av';
+import {Sound} from 'expo-av/build/Audio';
 
 const song = {
   id: 1,
+  uri:
+    'https://dl.last.fm/static/1611055001/125129999/cd44daf7aa9f6618fc855a7d29033aa3850612a0d6bd251b25dcaa8f4ea73059/The+Echelon+Effect+-+Your+First+Light+My+Eventide.mp3',
   imageUri:
     'https://cdn6.f-cdn.com/contestentries/1485199/27006121/5ca3e39ced7f1_thumb900.jpg',
   title: 'Hign on You',
@@ -15,6 +26,40 @@ const song = {
 };
 
 const PlayerWidget = () => {
+  const [sound, setSound] = useState<Sound | null>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+
+  const onPlaybackStatusUpdate = (status: any) => {
+    setIsPlaying(status.isPlaying);
+  };
+
+  const playCurrentSong = async () => {
+    if (sound) {
+      await sound.unloadAsync();
+    }
+    const {sound: newSound} = await Sound.createAsync(
+      {uri: song.uri},
+      {shouldPlay: isPlaying},
+      onPlaybackStatusUpdate,
+    );
+    setSound(newSound);
+  };
+
+  useEffect(() => {
+    playCurrentSong();
+  }, []);
+
+  const onPlayPausePress = async () => {
+    if (!sound) {
+      return;
+    }
+    if (isPlaying) {
+      await sound.stopAsync();
+    } else {
+      await sound.playAsync();
+    }
+  };
+
   const {colors, isDark} = useTheme();
 
   const containerStyle = {
@@ -40,7 +85,14 @@ const PlayerWidget = () => {
         </View>
         <View style={styles.iconsContainer}>
           <Icon name="heart-o" color={color.WHITE} size={25} />
-          <Icon name="play" color={color.WHITE} size={25} />
+
+          <TouchableOpacity onPress={onPlayPausePress}>
+            <Icon
+              name={isPlaying ? 'pause' : 'play'}
+              color={color.WHITE}
+              size={25}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </View>

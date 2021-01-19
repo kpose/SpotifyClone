@@ -14,9 +14,6 @@ import {ThemeProvider} from './src/utils';
 import {useTheme} from './src/utils/ThemeProvider';
 import BottomTab from './src/navigation/BottomTab';
 import {PlayerWidget} from './src/components';
-import {Constants} from 'react-native-unimodules';
-
-console.log(Constants.systemFonts);
 
 const App = () => {
   const {colors, isDark} = useTheme();
