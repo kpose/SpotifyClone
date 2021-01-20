@@ -25,7 +25,6 @@ const Home = () => {
       try {
         const data = await API.graphql(graphqlOperation(listAlbumCategorys));
 
-        console.log(data.data.listAlbumCategorys.items);
         setCategories(data.data.listAlbumCategorys.items);
       } catch (error) {
         console.log(error);

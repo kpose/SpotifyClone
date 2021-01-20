@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -14,22 +14,32 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {color} from '../../utils/';
 import {Audio} from 'expo-av';
 import {Sound} from 'expo-av/build/Audio';
-
-const song = {
-  id: 1,
-  uri:
-    'https://kposesongs.s3.us-east-2.amazonaws.com/Billie+Eilish+-+bad+guy.mp3',
-  imageUri:
-    'https://cdn6.f-cdn.com/contestentries/1485199/27006121/5ca3e39ced7f1_thumb900.jpg',
-  title: 'Hign on You',
-  artist: 'Kpose',
-};
+import {AppContext} from '../../../AppContext';
+import {API, graphqlOperation} from 'aws-amplify';
+import {getSong} from '../../graphql/queries';
 
 const PlayerWidget = () => {
   const [sound, setSound] = useState<Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [duration, setDuration] = useState<number | null>(null);
   const [position, setPosition] = useState<number | null>(null);
+  const [song, setSong] = useState(null);
+
+  const {songId} = useContext(AppContext);
+
+  useEffect(() => {
+    const fetchSong = async () => {
+      try {
+        const data = await API.graphql(graphqlOperation(getSong, {id: songId}));
+        //console.log(data.data.getSong.uri);
+        setSong(data.data.getSong);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchSong();
+  }, [songId]);
 
   const onPlaybackStatusUpdate = (status: any) => {
     setIsPlaying(status.isPlaying);
@@ -43,7 +53,6 @@ const PlayerWidget = () => {
     }
     const {sound: newSound} = await Sound.createAsync(
       {uri: song.uri},
-      //require('../../data/Dea.mp3'),
       {shouldPlay: isPlaying},
       onPlaybackStatusUpdate,
     );
@@ -51,8 +60,10 @@ const PlayerWidget = () => {
   };
 
   useEffect(() => {
-    playCurrentSong();
-  }, []);
+    if (song) {
+      playCurrentSong();
+    }
+  }, [song]);
 
   const onPlayPausePress = async () => {
     if (!sound) {
@@ -76,16 +87,16 @@ const PlayerWidget = () => {
   const {colors, isDark} = useTheme();
 
   const containerStyle = {
-    //flex: 1,
-    //justifyContent: 'center',
-    //alignItems: 'center',
     backgroundColor: colors.background,
   } as ViewStyle;
 
   const textStyle = {
-    //fontSize: 18,
     color: colors.text,
   } as TextStyle;
+
+  if (!song) {
+    return null;
+  }
 
   return (
     <View style={[containerStyle, styles.container]}>

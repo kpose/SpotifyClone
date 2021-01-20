@@ -4,5 +4,14 @@ import AlbumCategory from './AlbumCategory';
 import SongListItem from './SongListItem';
 import AlbumHeader from './AlbumHeader';
 import PlayerWidget from './PlayerWidget';
+import Loading from './Loading';
 
-export {Switch, Album, AlbumCategory, SongListItem, AlbumHeader, PlayerWidget};
+export {
+  Switch,
+  Album,
+  AlbumCategory,
+  SongListItem,
+  AlbumHeader,
+  PlayerWidget,
+  Loading,
+};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,13 +14,21 @@ import {ThemeProvider} from './src/utils';
 import {useTheme} from './src/utils/ThemeProvider';
 import BottomTab from './src/navigation/BottomTab';
 import {PlayerWidget} from './src/components';
+import {AppContext} from './AppContext';
 
 const App = () => {
   const {colors, isDark} = useTheme();
+
+  const [songId, setSongId] = useState<string | null>(null);
+
   return (
-    <>
-      <AppearanceProvider>
-        <ThemeProvider>
+    <AppearanceProvider>
+      <ThemeProvider>
+        <AppContext.Provider
+          value={{
+            songId,
+            setSongId: (id: string) => setSongId(id),
+          }}>
           <NavigationContainer>
             <StatusBar
               animated
@@ -31,9 +39,9 @@ const App = () => {
               <PlayerWidget />
             </View>
           </NavigationContainer>
-        </ThemeProvider>
-      </AppearanceProvider>
-    </>
+        </AppContext.Provider>
+      </ThemeProvider>
+    </AppearanceProvider>
   );
 };
 
