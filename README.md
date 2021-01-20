@@ -1,6 +1,6 @@
 # Spotify Clone
 
-This is an example clone of [Airbnb](https://www.airbnb.com/?) built with [React Native](https://facebook.github.io/react-native/).
+This is an example clone of [Spotify](https://www.spotify.com) built with [React Native](https://facebook.github.io/react-native/).
 
 ## Setup
 
